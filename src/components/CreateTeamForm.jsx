@@ -15,7 +15,7 @@ const CreateTeamForm = ({ setIsFormOpen }) => {
       members: team,
     };
 
-    fetch("http://localhost:3001/api/team", {
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/team`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

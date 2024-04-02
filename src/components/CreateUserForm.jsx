@@ -21,7 +21,7 @@ const CreateUserForm = ({ setIsFormOpen }) => {
     };
     console.log(JSON.stringify(formData));
 
-    fetch("http://localhost:3001/api/users", {
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

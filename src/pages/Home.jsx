@@ -13,9 +13,11 @@ const Home = () => {
   const dispatch = useDispatch();
   const query = useSelector((state) => state.query.value);
 
-  let url = `http://localhost:3001/api/users?page=${query.page}&perPage=${
-    query.perPage
-  }&search=${query.search}&domain=${query.domain}&gender=${query.gender}${
+  let url = `${import.meta.env.VITE_BACKEND_URL}/api/users?page=${
+    query.page
+  }&perPage=${query.perPage}&search=${query.search}&domain=${
+    query.domain
+  }&gender=${query.gender}${
     query.available ? `&available=${query.available}` : ``
   }`;
 
