@@ -8,7 +8,7 @@ import Filter from "../components/Filter";
 const Home = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
-  const [totalPages, setTotalPages] = useState();
+  const [total, setTotal] = useState();
 
   const dispatch = useDispatch();
   const query = useSelector((state) => state.query.value);
@@ -31,10 +31,8 @@ const Home = () => {
           throw new Error(response.status);
         }
         const rawData = await response.json();
-
         dispatch(setUsers(rawData.data));
-        setTotalPages(rawData.totalPages);
-        console.log("--", rawData.totalPages);
+        setTotal(rawData.total);
         setError("");
       } catch (err) {
         setError(err + "");
@@ -45,15 +43,19 @@ const Home = () => {
     };
     getData();
   }, [dispatch, query]);
+
+  const totalPages = Math.ceil(total / query.perPage);
+
   if (loading) {
     return <h1 className="text-center text-xl">Wait...</h1>;
   }
   return (
     <>
       <Filter />
+      <div className="mb-2">Search Results: {total}</div>
       <Cards />
       {error && <h1 className="text-center text-xl text-red-500">{error}</h1>}
-      {totalPages && <Pagination totalPages={totalPages} />}
+      {total && <Pagination totalPages={totalPages} />}
     </>
   );
 };

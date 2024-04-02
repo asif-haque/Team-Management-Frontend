@@ -2,8 +2,16 @@ import React, { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { notify } from "../utils/notify";
 
-const CreateUserForm = ({ setIsFormOpen }) => {
+const CreateUserForm = ({ setIsFormOpen, user }) => {
   const [error, setError] = useState();
+  const [val, setVal] = useState(user);
+
+  const handleChange = (e) => {
+    if (user) {
+      console.log(e.target.name);
+      setVal({ ...val, [e.target.name]: e.target.value });
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -18,13 +26,18 @@ const CreateUserForm = ({ setIsFormOpen }) => {
     };
     console.log(JSON.stringify(formData));
 
-    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    })
+    fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/api/users${
+        user ? `/${user._id}` : ``
+      }`,
+      {
+        method: user ? "PUT" : "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      }
+    )
       .then((res) => res.json())
       .then((res) => {
         if (!res.error) {
@@ -37,13 +50,13 @@ const CreateUserForm = ({ setIsFormOpen }) => {
       .catch((err) => setError(err + ""));
   };
   return (
-    <div className="fixed size-full z-40 flex justify-center items-center bg-[rgba(0,0,0,0.5)] backdrop-blur-sm">
+    <div className="fixed top-0 left-0 size-full z-40 flex justify-center items-center bg-[rgba(0,0,0,0.5)] backdrop-blur-sm">
       <form
         className="relative w-[90%] sm:w-1/2 mx-auto bg-neutral-900 p-10 rounded-2xl max-h-[70vh] overflow-scroll md:h-fit md:overflow-hidden"
         onSubmit={handleSubmit}
       >
         <IoClose
-          className="text-3xl absolute right-3 top-2 cursor-pointer"
+          className="text-3xl absolute right-3 top-3 cursor-pointer"
           onClick={(e) => setIsFormOpen(false)}
         />
 
@@ -56,6 +69,8 @@ const CreateUserForm = ({ setIsFormOpen }) => {
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               required
+              value={val?.first_name}
+              onChange={handleChange}
             />
             <label
               htmlFor="first_name"
@@ -72,6 +87,8 @@ const CreateUserForm = ({ setIsFormOpen }) => {
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               required
+              value={val?.last_name}
+              onChange={handleChange}
             />
             <label
               htmlFor="last_name"
@@ -89,6 +106,8 @@ const CreateUserForm = ({ setIsFormOpen }) => {
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
             required
+            value={val?.email}
+            onChange={handleChange}
           />
           <label
             htmlFor="email"
@@ -106,6 +125,8 @@ const CreateUserForm = ({ setIsFormOpen }) => {
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
             required
+            value={val?.domain}
+            onChange={handleChange}
           />
           <label
             htmlFor="domain"
@@ -120,6 +141,8 @@ const CreateUserForm = ({ setIsFormOpen }) => {
             name="gender"
             id="gender"
             className="px-1 py-1 rounded outline-none"
+            value={val?.gender}
+            onChange={handleChange}
           >
             <option value="male">Male</option>
             <option value="female">Female</option>
@@ -131,6 +154,8 @@ const CreateUserForm = ({ setIsFormOpen }) => {
             name="avail"
             id="avail"
             className="px-1 py-1 rounded outline-none"
+            value={val?.available}
+            onChange={handleChange}
           >
             <option value={true}>Available</option>
             <option value={false}>Not Available</option>

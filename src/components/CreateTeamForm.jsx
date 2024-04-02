@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { IoClose } from "react-icons/io5";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { notify } from "../utils/notify";
+import { clearTeam } from "../redux/features/teamSlice";
 
 const CreateTeamForm = ({ setIsFormOpen }) => {
   const [error, setError] = useState();
   const team = useSelector((state) => state.team.value);
 
-  // const dispatch = 
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -27,7 +28,7 @@ const CreateTeamForm = ({ setIsFormOpen }) => {
       .then((res) => {
         if (!res.error) {
           setIsFormOpen(false);
-
+          dispatch(clearTeam());
           return notify(res.message);
         } else {
           throw new Error(res.message);

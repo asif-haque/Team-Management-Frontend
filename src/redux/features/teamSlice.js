@@ -10,9 +10,12 @@ export const teamSlice = createSlice({
     removeFromTeam: (state, action) => {
       state.value = state.value.filter((el) => el !== action.payload);
     },
+    clearTeam: (state) => {
+      state.value = [];
+    },
   },
 });
 
-export const { addToTeam } = teamSlice.actions;
+export const { addToTeam, removeFromTeam, clearTeam } = teamSlice.actions;
 
 export default teamSlice.reducer;
