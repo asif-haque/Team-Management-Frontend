@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+* {
+  font-family: "Montserrat", sans-serif;
+}
+
+.active {
+  border-bottom: 2px solid white;
+}
+
+nav a:hover {
+  border-bottom: 2px solid white;
+}
+
+nav a {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 8px;
+}
