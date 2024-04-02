@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-import Select from "./Select";
-import { domains } from "../constants/domains";
 import { IoClose } from "react-icons/io5";
-import { Bounce, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { notify } from "../utils/notify";
 
 const CreateUserForm = ({ setIsFormOpen }) => {
   const [error, setError] = useState();
@@ -32,17 +29,7 @@ const CreateUserForm = ({ setIsFormOpen }) => {
       .then((res) => {
         if (!res.error) {
           setIsFormOpen(false);
-          return toast(res.message, {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-            transition: Bounce,
-          });
+          return notify(res.message);
         } else {
           throw new Error(res.message);
         }

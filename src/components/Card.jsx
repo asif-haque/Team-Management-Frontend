@@ -6,13 +6,15 @@ import { addToTeam } from "../redux/features/teamSlice";
 import checkSameDomain from "../utils/checkSameDomain";
 import checkSameUser from "../utils/checkSameUser";
 import { Bounce, toast } from "react-toastify";
+import { MdDeleteForever } from "react-icons/md";
+import { notify } from "../utils/notify";
 
 const Card = ({ user, add = true }) => {
   const [error, setError] = useState();
   const team = useSelector((state) => state.team.value);
 
   const dispatch = useDispatch();
-  const handleAdd = (id) => {
+  const handleAddToTeam = (id) => {
     if (!user.available) {
       setError("User not available!");
     } else if (checkSameUser(team, user)) {
@@ -21,18 +23,23 @@ const Card = ({ user, add = true }) => {
       setError("Member with same domain already exists in the team!");
     } else {
       dispatch(addToTeam(user));
-      toast("Added in the team", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        transition: Bounce,
-      });
+      notify("Added to the team.");
     }
+  };
+
+  const handleDeleteUser = () => {
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/${user._id}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (!res.error) {
+          notify(res.message);
+        } else {
+          throw new Error(response.message);
+        }
+      })
+      .catch((err) => setError(err + ""));
   };
 
   useEffect(() => {
@@ -58,6 +65,12 @@ const Card = ({ user, add = true }) => {
         <h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
           {user.first_name} {user.last_name}
         </h5>
+        {add && (
+          <MdDeleteForever
+            className="ml-auto text-2xl text-red-500"
+            onClick={handleDeleteUser}
+          />
+        )}
       </div>
       <div className="p-3 space-y-2">
         <div className="text-sm bg-gray-600 w-fit px-3 py-1 rounded-[100px]">
@@ -86,7 +99,7 @@ const Card = ({ user, add = true }) => {
       {add && (
         <button
           className="mx-3 mb-5 mt-auto px-5 py-1 rounded-[100px] bg-indigo-500 hover:bg-indigo-600 transition-all duration-200"
-          onClick={() => handleAdd(user._id)}
+          onClick={() => handleAddToTeam(user._id)}
         >
           Add to Team
         </button>
