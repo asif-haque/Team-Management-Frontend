@@ -27,13 +27,13 @@ const Filter = () => {
   };
 
   return (
-    <div className="space-y-2 sm:space-y-0 sm:flex flex-wrap gap-5 mb-10 items-center text-sm">
+    <div className="space-y-3 sm:space-y-0 sm:flex flex-wrap gap-5 mb-10 items-center text-sm">
       <div className="flex items-center gap-2">
         <IoFilter />
         Filter by
       </div>
       <div
-        className={`max-w-[120px] text-center px-3 py-2 rounded-[100px] outline-none cursor-pointer border border-purple-600 text-purple-500 items-center gap-2 hover:bg-purple-600 hover:text-purple-50 transition-opacity duration-300 ${
+        className={`max-w-[120px] text-center px-3 py-1 rounded-[100px] outline-none cursor-pointer border border-purple-600 text-purple-500 items-center gap-2 hover:bg-purple-600 hover:text-purple-50 transition-opacity duration-300 ${
           query.domain || query.gender || query.available ? `flex` : `hidden`
         }`}
         onClick={handleClear}
@@ -41,10 +41,8 @@ const Filter = () => {
         <RxCross1 />
         Clear
       </div>
-      <Select name="domain" label="Domain" options={domains} />
-      <Select name="gender" label="Gender" options={genders} />
       <div
-        className={`max-w-[120px] text-center px-4 py-2 rounded-[100px] outline-none cursor-pointer ${
+        className={`max-w-[120px] text-center px-3 py-1 rounded-[100px] outline-none cursor-pointer ${
           query.available
             ? `bg-purple-600 text-white`
             : `border border-purple-600 text-purple-500`
@@ -53,6 +51,8 @@ const Filter = () => {
       >
         Available
       </div>
+      <Select name="gender" label="Gender" options={genders} />
+      <Select name="domain" label="Domain" options={domains} />
     </div>
   );
 };

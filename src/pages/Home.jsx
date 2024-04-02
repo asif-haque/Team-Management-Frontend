@@ -12,6 +12,7 @@ const Home = () => {
 
   const dispatch = useDispatch();
   const query = useSelector((state) => state.query.value);
+  const refetch = useSelector((state) => state.users.refetch);
 
   let url = `${import.meta.env.VITE_BACKEND_URL}/api/users?page=${
     query.page
@@ -31,6 +32,7 @@ const Home = () => {
           throw new Error(response.status);
         }
         const rawData = await response.json();
+        console.log("refetched", refetch);
         dispatch(setUsers(rawData.data));
         setTotal(rawData.total);
         setError("");
@@ -42,7 +44,7 @@ const Home = () => {
       }
     };
     getData();
-  }, [dispatch, query]);
+  }, [dispatch, query, refetch]);
 
   const totalPages = Math.ceil(total / query.perPage);
 

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { notify } from "../utils/notify";
-import { clearTeam } from "../redux/features/teamSlice";
+import { clearTeam, refetchTeamData } from "../redux/features/teamSlice";
 
 const CreateTeamForm = ({ setIsFormOpen }) => {
   const [error, setError] = useState();
@@ -29,6 +29,7 @@ const CreateTeamForm = ({ setIsFormOpen }) => {
         if (!res.error) {
           setIsFormOpen(false);
           dispatch(clearTeam());
+          dispatch(refetchTeamData());
           return notify(res.message);
         } else {
           throw new Error(res.message);

@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { notify } from "../utils/notify";
+import { refetchData } from "../redux/features/usersSlice";
+import { useDispatch } from "react-redux";
 
 const CreateUserForm = ({ setIsFormOpen, user }) => {
   const [error, setError] = useState();
   const [val, setVal] = useState(user);
+
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     if (user) {
@@ -20,7 +24,7 @@ const CreateUserForm = ({ setIsFormOpen, user }) => {
       last_name: e.target.last_name.value,
       email: e.target.email.value,
       gender: e.target.gender.value,
-      // avatar: e.target.avatar.value,
+      avatar: e.target.avatar.value,
       domain: e.target.domain.value,
       available: e.target.avail.value === "true" ? true : false,
     };
@@ -42,7 +46,8 @@ const CreateUserForm = ({ setIsFormOpen, user }) => {
       .then((res) => {
         if (!res.error) {
           setIsFormOpen(false);
-          return notify(res.message);
+          dispatch(refetchData());
+          notify(res.message);
         } else {
           throw new Error(res.message);
         }
@@ -52,7 +57,7 @@ const CreateUserForm = ({ setIsFormOpen, user }) => {
   return (
     <div className="fixed top-0 left-0 size-full z-40 flex justify-center items-center bg-[rgba(0,0,0,0.5)] backdrop-blur-sm">
       <form
-        className="relative w-[90%] sm:w-1/2 mx-auto bg-neutral-900 p-10 rounded-2xl max-h-[70vh] overflow-scroll md:h-fit md:overflow-hidden"
+        className="relative w-[90%] sm:w-1/2 mx-auto bg-neutral-900 p-10 rounded-2xl max-h-[70vh] overflow-scroll md:max-h-fit md:overflow-hidden"
         onSubmit={handleSubmit}
       >
         <IoClose
@@ -97,6 +102,24 @@ const CreateUserForm = ({ setIsFormOpen, user }) => {
               Last name
             </label>
           </div>
+        </div>
+        <div className="relative z-0 w-full mb-5 group">
+          <input
+            type="text"
+            name="avatar"
+            id="avatar"
+            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            placeholder=" "
+            required
+            value={val?.avatar}
+            onChange={handleChange}
+          />
+          <label
+            htmlFor="avatar"
+            className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >
+            Profile Picture Link
+          </label>
         </div>
         <div className="relative z-0 w-full mb-5 group">
           <input
@@ -165,7 +188,7 @@ const CreateUserForm = ({ setIsFormOpen, user }) => {
           type="submit"
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
-          Create
+          {user ? `Edit` : `Create`}
         </button>
       </form>
     </div>

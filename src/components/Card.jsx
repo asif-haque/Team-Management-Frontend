@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { CgUnavailable } from "react-icons/cg";
 import { useDispatch, useSelector } from "react-redux";
-import { addToTeam } from "../redux/features/teamSlice";
+import { addToTeam, removeFromTeam } from "../redux/features/teamSlice";
 import checkSameDomain from "../utils/checkSameDomain";
 import checkSameUser from "../utils/checkSameUser";
 import { MdDeleteForever } from "react-icons/md";
 import { notify } from "../utils/notify";
 import { CiEdit } from "react-icons/ci";
 import CreateUserForm from "./CreateUserForm";
+import { refetchData } from "../redux/features/usersSlice";
+import { IoPersonRemoveOutline } from "react-icons/io5";
 
 const Card = ({ user, add = true }) => {
   const [error, setError] = useState();
@@ -38,6 +40,7 @@ const Card = ({ user, add = true }) => {
       .then((res) => res.json())
       .then((res) => {
         if (!res.error) {
+          dispatch(refetchData());
           notify(res.message);
         } else {
           throw new Error(response.message);
@@ -48,6 +51,10 @@ const Card = ({ user, add = true }) => {
 
   const handleEditUser = () => {
     setIsFormOpen(true);
+  };
+
+  const handleRemoveFromTeam = () => {
+    dispatch(removeFromTeam(user));
   };
 
   useEffect(() => {
@@ -61,17 +68,19 @@ const Card = ({ user, add = true }) => {
       )}
       <div className="size-full border border-purple-700 rounded-lg dark:bg-gray-800 m-auto overflow-hidden hover:scale-[98%] cursor-pointer transition-all duration-300">
         <div className="flex items-center gap-2 bg-gray-700 p-2">
-          <div className="rounded-full overflow-hidden border-[1px] border-neutral-500">
-            <img
-              className="size-full object-contain"
-              src={user.avatar}
-              alt=""
-            />
-          </div>
+          {user.avatar && (
+            <div className="w-[50px] min-w-[50px] h-[50px] min-h-[50px] rounded-full overflow-hidden border-[1px] border-neutral-500">
+              <img
+                className="size-full object-cover"
+                src={user.avatar}
+                alt=""
+              />
+            </div>
+          )}
           <h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
             {user.first_name} {user.last_name}
           </h5>
-          {add && (
+          {add ? (
             <div className="ml-auto flex items-center gap-3">
               <CiEdit className="text-xl" onClick={handleEditUser} />
               <MdDeleteForever
@@ -79,6 +88,11 @@ const Card = ({ user, add = true }) => {
                 onClick={handleDeleteUser}
               />
             </div>
+          ) : (
+            <IoPersonRemoveOutline
+              className="ml-auto text-2xl text-red-500"
+              onClick={handleRemoveFromTeam}
+            />
           )}
         </div>
         <div className="p-3 space-y-2">

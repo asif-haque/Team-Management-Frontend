@@ -12,6 +12,7 @@ const Team = () => {
   const [error, setError] = useState();
 
   const team = useSelector((state) => state.team.value);
+  const refetch = useSelector((state) => state.team.refetch);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -34,7 +35,7 @@ const Team = () => {
       }
     };
     getData();
-  }, [dispatch]);
+  }, [dispatch, refetch]);
 
   const handleCreate = () => {
     setIsFormOpen(true);
@@ -58,13 +59,17 @@ const Team = () => {
           Create Team
         </button>
       </div>
-      <div className="m-auto space-y-3 sm:space-y-0 sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        {team.map((member) => (
-          <div key={member._id}>
-            <Card user={member} add={false} />
-          </div>
-        ))}
-      </div>
+      {team.length ? (
+        <div className="m-auto space-y-3 sm:space-y-0 sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-7">
+          {team.map((member) => (
+            <div key={member._id}>
+              <Card user={member} add={false} />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <h1 className="text-xl mb-5 px-5">None Selected.</h1>
+      )}
       {error && <h1 className="text-center text-xl text-red-500">{error}</h1>}
       {teams && (
         <>

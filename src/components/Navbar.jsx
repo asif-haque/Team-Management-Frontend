@@ -20,8 +20,21 @@ const Navbar = ({ setIsFormOpen }) => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  window.addEventListener("click", (e) => {
+    setIsMenuOpen(false);
+  });
+
+  if (isMenuOpen) {
+    document.querySelector("body").style.overflow = "hidden";
+  } else {
+    document.querySelector("body").style.overflow = "visible";
+  }
+
   return (
-    <nav className="fixed z-50 w-full navbar lg:px-10 backdrop-blur-md h-14 flex items-center text-white">
+    <nav
+      className="fixed z-50 w-full navbar lg:px-10 backdrop-blur-md h-14 flex items-center text-white"
+      onClick={(e) => e.stopPropagation()}
+    >
       <div className="flex justify-between items-center h-full mx-auto w-full">
         <div className="relative size-full">
           <input

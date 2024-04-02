@@ -19,7 +19,7 @@ const Select = ({ name, label, options, all = true }) => {
         id={name}
         value={query[name]}
         onChange={handleChange}
-        className={`w-fit text-center px-3 py-2 rounded-[100px] outline-none font-medium cursor-pointer ${
+        className={`w-fit text-center px-3 py-1 rounded-[100px] outline-none font-medium cursor-pointer ${
           query[name]
             ? `bg-purple-600 text-white`
             : `border border-purple-600 text-purple-500`

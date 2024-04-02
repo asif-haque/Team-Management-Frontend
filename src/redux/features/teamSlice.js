@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const teamSlice = createSlice({
   name: "team",
-  initialState: { value: [] },
+  initialState: { value: [], refetch: 0 },
   reducers: {
     addToTeam: (state, action) => {
       state.value.push(action.payload);
@@ -13,9 +13,13 @@ export const teamSlice = createSlice({
     clearTeam: (state) => {
       state.value = [];
     },
+    refetchTeamData: (state, action) => {
+      state.refetch += 1;
+    },
   },
 });
 
-export const { addToTeam, removeFromTeam, clearTeam } = teamSlice.actions;
+export const { addToTeam, removeFromTeam, clearTeam, refetchTeamData } =
+  teamSlice.actions;
 
 export default teamSlice.reducer;
