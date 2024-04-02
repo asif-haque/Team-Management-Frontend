@@ -5,7 +5,6 @@ export const usersSlice = createSlice({
   initialState: { value: [] },
   reducers: {
     setUsers: (state, action) => {
-      // revisit
       state.value = action.payload;
     },
   },

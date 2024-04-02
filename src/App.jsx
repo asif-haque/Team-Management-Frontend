@@ -14,7 +14,7 @@ const App = () => {
     <>
       <Navbar setIsFormOpen={setIsFormOpen} />
       {isFormOpen && <CreateUserForm setIsFormOpen={setIsFormOpen} />}
-      <ToastContainer className="fixed top-[13vh]" />
+      <ToastContainer className="fixed top-[10vh]" />
       <div className="h-[13vh]"></div>
       <div className="w-[95%] m-auto">
         <Routes>

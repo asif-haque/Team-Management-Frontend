@@ -27,7 +27,7 @@ const Filter = () => {
   };
 
   return (
-    <div className="space-y-2 sm:space-y-0 sm:flex flex-wrap gap-5 mb-10 items-center">
+    <div className="space-y-2 sm:space-y-0 sm:flex flex-wrap gap-5 mb-10 items-center text-sm">
       <div className="flex items-center gap-2">
         <IoFilter />
         Filter by

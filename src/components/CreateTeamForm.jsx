@@ -7,6 +7,8 @@ const CreateTeamForm = ({ setIsFormOpen }) => {
   const [error, setError] = useState();
   const team = useSelector((state) => state.team.value);
 
+  // const dispatch = 
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = {
@@ -25,6 +27,7 @@ const CreateTeamForm = ({ setIsFormOpen }) => {
       .then((res) => {
         if (!res.error) {
           setIsFormOpen(false);
+
           return notify(res.message);
         } else {
           throw new Error(res.message);
